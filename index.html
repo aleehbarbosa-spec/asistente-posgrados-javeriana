@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Posgrados en Administración | Javeriana Bogotá</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <span class="blob b1" aria-hidden="true"></span><span class="blob b2" aria-hidden="true"></span><span class="blob b3" aria-hidden="true"></span>
+  <div class="hero-in">
+    <div class="brand">
+      <img class="logo" alt="Pontificia Universidad Javeriana" src="https://www.javeriana.edu.co/recursosdb/1372208/5640014/escudoPUJ-Bogota_rgb-negativo_.png/e52175ba-f5e0-faf2-429e-0d3e3f918e7e?t=1652901998384" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='logo.png'}else{this.remove()}">
+      <span>Pontificia Universidad Javeriana<br><b>Facultad de Ciencias Económicas y Administrativas</b></span>
+    </div>
+    <h1>Descubre tu próximo posgrado en Administración</h1>
+    <p class="sub">Especializaciones y maestrías: fechas, requisitos, horarios y descuentos. Pregúntale a nuestro asistente.</p>
+    <div class="pills"><span>Inscripciones abiertas</span><span>Cierre: 23 oct · 20 nov · 11 dic</span></div>
+  </div>
+</header>
+
+<main class="app">
+  <section id="intro" class="intro">
+    <h2>Elige un programa y conócelo</h2>
+    <div id="programas" class="programas"></div>
+    <h3>O pregunta por…</h3>
+    <div id="chips" class="chips"></div>
+  </section>
+
+  <section id="chat" class="chat" aria-live="polite"></section>
+
+  <form id="form" class="composer">
+    <label for="input" class="sr">Escribe tu pregunta</label>
+    <textarea id="input" rows="1" placeholder="Escribe tu pregunta aquí" required></textarea>
+    <button type="submit" id="send" aria-label="Enviar pregunta">Enviar</button>
+  </form>
+
+  <footer class="foot">
+    <span>Respuestas generadas con IA. Confirma siempre en las fuentes oficiales.</span>
+    <a id="humano" href="#" target="_blank" rel="noopener">Hablar con el equipo de Posgrados</a>
+  </footer>
+</main>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
