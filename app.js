@@ -77,14 +77,19 @@ async function ask(question){
   if(C.PROXY_URL){ r=await fetch(C.PROXY_URL,init); }
   else {
     const k=apiKey(); if(!k) throw new Error("Falta la API key. Recarga la página y pégala cuando la pida.");
-    // Si un modelo ya no existe (404), prueba el siguiente de la lista
-    const MODELS=[C.MODEL,"gemini-3.1-flash-lite","gemini-flash-latest"].filter((m,i,x)=>m&&x.indexOf(m)===i);
-    for(const m of MODELS){
-      r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${k}`,init);
-      if(r.status!==404) break;
+    // Si un modelo no existe (404) o está saturado (429/500/503), prueba el siguiente; reintenta una vez
+    const MODELS=[C.MODEL,"gemini-3.1-flash-lite","gemini-flash-latest","gemini-3-flash-preview","gemini-3.5-flash"].filter((m,i,x)=>m&&x.indexOf(m)===i);
+    const retry=[404,429,500,503];
+    for(let intento=0;intento<2;intento++){
+      for(const m of MODELS){
+        r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${k}`,init);
+        if(!retry.includes(r.status)) break;
+      }
+      if(!retry.includes(r.status)) break;
+      await new Promise(res=>setTimeout(res,2500));
     }
   }
-  if(!r.ok){ if(r.status===400||r.status===403) localStorage.removeItem("gk"); throw new Error(r.status===429?"Hay muchas consultas en este momento. Intenta de nuevo en un minuto.":`No pude conectar con el servicio (código ${r.status}).`); }
+  if(!r.ok){ if(r.status===400||r.status===403) localStorage.removeItem("gk"); throw new Error(r.status===429?"Hay muchas consultas en este momento. Intenta de nuevo en un minuto.":(r.status===503||r.status===500)?"El servicio de IA de Google está saturado en este momento. Intenta de nuevo en unos segundos.":`No pude conectar con el servicio (código ${r.status}).`); }
   const j=await r.json();
   const text=j.candidates?.[0]?.content?.parts?.map(p=>p.text).join("")||"";
   if(!text) throw new Error("No recibí respuesta. Reformula tu pregunta o escribe al equipo de Posgrados.");
